@@ -1,9 +1,9 @@
-// eslint-disable-next-line no-unused-vars
-import React, { Component, useEffect, useState } from "react";
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-// Component import
+// Components
 import Navbar from "./components/Navbar/Navbar";
 import Hero from "./components/Hero/Hero";
 import About from "./components/About/About";
@@ -16,14 +16,15 @@ import Footer from "./components/Footer/Footer";
 import Experience from "./components/Experience/Experience";
 import Booking from "./components/Booking/Booking";
 
-
 const App = () => {
-  // dark mode start
-  const [theme, setTheme] = useState(
-    localStorage.getItem("theme") ? localStorage.getItem("theme") : "light"
-  );
+  // Dark Mode with localStorage
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "light";
+  });
+
   const element = document.documentElement;
 
+  // Apply theme on change
   useEffect(() => {
     if (theme === "dark") {
       element.classList.add("dark");
@@ -33,9 +34,9 @@ const App = () => {
       localStorage.setItem("theme", "light");
     }
   }, [theme]);
-  // dark mode end
 
-  React.useEffect(() => {
+  // Initialize AOS (once)
+  useEffect(() => {
     AOS.init({
       offset: 100,
       duration: 800,
@@ -43,21 +44,23 @@ const App = () => {
       delay: 100,
     });
     AOS.refresh();
-  }, []);
+  }, []); // Empty dependency → runs only once
+
   return (
     <div className="bg-white dark:bg-black dark:text-white text-black overflow-x-hidden">
       <Navbar theme={theme} setTheme={setTheme} />
-      <Hero theme={theme} />
-      <Booking />
-      <About />
-      <Services />
-      <CarList />
-     <Experience />
+      
+      {/* All sections with proper IDs for scroll */}
+      <section id="hero"><Hero theme={theme} /></section>
+      <section id="booking"><Booking /></section>
+      <section id="about"><About /></section>
+      <section id="services"><Services /></section>
+      <section id="carlist"><CarList /></section>
+      <Experience />
       <Testimonial />
       <AppStoreBanner />
-      <Contact />
-     <Footer />
-      
+      <section id="contact"><Contact /></section>
+      <Footer />
     </div>
   );
 };
