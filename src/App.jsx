@@ -52,10 +52,11 @@ const App = () => {
       
       {/* All sections with proper IDs for scroll */}
       <section id="hero"><Hero theme={theme} /></section>
-      <section id="booking"><Booking /></section>
+      
       <section id="about"><About /></section>
       <section id="services"><Services /></section>
       <section id="carlist"><CarList /></section>
+      <section id="booking"><Booking /></section>
       <Experience />
       <Testimonial />
       <AppStoreBanner />

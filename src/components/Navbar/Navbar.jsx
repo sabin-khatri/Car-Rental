@@ -3,9 +3,11 @@
 import React, { useState } from "react";
 import { BiSolidSun, BiSolidMoon } from "react-icons/bi";
 import { HiMenuAlt3, HiMenuAlt1 } from "react-icons/hi";
-import { Link } from "react-scroll";
+import { Link as ScrollLink } from "react-scroll";
+import { Link as RouterLink } from "react-router-dom";
 import ResponsiveMenu from "./ResponsiveMenu";
 
+// Navigation Links
 export const Navlinks = [
   { id: 1, name: "Home", link: "hero" },
   { id: 2, name: "CarList", link: "carlist" },
@@ -23,47 +25,58 @@ const Navbar = ({ theme, setTheme }) => {
 
   return (
     <>
+      {/* Main Navbar */}
       <div className="fixed top-0 left-0 right-0 z-50 shadow-md w-full bg-white dark:bg-black dark:text-white duration-300">
         <div className="container mx-auto px-4 py-3 md:py-0">
           <div className="flex justify-between items-center">
             {/* Logo */}
-            <Link
+            <ScrollLink
               to="hero"
               smooth={true}
               duration={500}
-              className="text-3xl font-bold font-serif cursor-pointer"
+              className="text-3xl font-bold font-serif cursor-pointer hover:text-primary transition"
             >
               GoDrive
-            </Link>
+            </ScrollLink>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:block">
               <ul className="flex items-center gap-8">
                 {Navlinks.map(({ id, name, link }) => (
                   <li key={id} className="py-4">
-                    <Link
-                      to={link}
-                      spy={true}
-                      smooth={true}
-                      duration={500}
-                      className="text-lg font-medium capitalize hover:text-primary py-2 hover:border-b-2 hover:border-primary transition-colors duration-300 cursor-pointer"
-                    >
-                      {name}
-                    </Link>
+                    {name === "CarList" ? (
+                      // Special case: CarList → /cars page
+                      <RouterLink
+                        to="/cars"
+                        className="text-lg font-medium capitalize hover:text-primary py-2 hover:border-b-2 hover:border-primary transition-colors duration-300"
+                      >
+                        {name}
+                      </RouterLink>
+                    ) : (
+                      <ScrollLink
+                        to={link}
+                        spy={true}
+                        smooth={true}
+                        duration={500}
+                        className="text-lg font-medium capitalize hover:text-primary py-2 hover:border-b-2 hover:border-primary transition-colors duration-300 cursor-pointer"
+                      >
+                        {name}
+                      </ScrollLink>
+                    )}
                   </li>
                 ))}
 
-                {/* Theme Switcher (Desktop) */}
+                {/* Theme Switcher */}
                 <li>
                   {theme === "dark" ? (
                     <BiSolidSun
                       onClick={() => setTheme("light")}
-                      className="text-2xl cursor-pointer"
+                      className="text-2xl cursor-pointer hover:text-primary transition"
                     />
                   ) : (
                     <BiSolidMoon
                       onClick={() => setTheme("dark")}
-                      className="text-2xl cursor-pointer"
+                      className="text-2xl cursor-pointer hover:text-primary transition"
                     />
                   )}
                 </li>
@@ -105,7 +118,13 @@ const Navbar = ({ theme, setTheme }) => {
       </div>
 
       {/* Responsive Menu */}
-      <ResponsiveMenu showMenu={showMenu} Navlinks={Navlinks} setShowMenu={setShowMenu} />
+      <ResponsiveMenu
+        showMenu={showMenu}
+        setShowMenu={setShowMenu}
+        Navlinks={Navlinks}
+        theme={theme}
+        setTheme={setTheme}
+      />
     </>
   );
 };
